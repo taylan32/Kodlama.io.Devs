@@ -1,4 +1,10 @@
-﻿using Application.Features.ProgrammingLanguages.Rules;
+﻿using Application.Features.Authentications.Rules;
+using Application.Features.GithubAccounts.Rules;
+using Application.Features.OperationClaims.Rules;
+using Application.Features.ProgrammingLanguages.Rules;
+using Application.Features.Technologies.Rules;
+using Application.Features.UserOperationClaims.Rules;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Validation;
 using FluentValidation;
 using MediatR;
@@ -21,9 +27,14 @@ namespace Application
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
             services.AddScoped<ProgrammingLanguageBusinessRules>();
+            services.AddScoped<TechnologyBusinessRules>();
+            services.AddScoped<AuthenticationBusinessRules>();
+            services.AddScoped<OperationClaimBusinessRules>();
+            services.AddScoped<UserOperationClaimBusinessRules>();
+            services.AddScoped<GithubAccountBusinessRules>();
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CacheRemovingBehavior<,>));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));

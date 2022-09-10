@@ -11,7 +11,7 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20220901172829_Init")]
+    [Migration("20220910110045_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,6 +52,44 @@ namespace Persistence.Migrations
                             Id = 2,
                             Name = "C#"
                         });
+                });
+
+            modelBuilder.Entity("Domain.Entities.Technology", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProgrammingLanguageId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProgrammingLanguageId");
+
+                    b.ToTable("Technology");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Technology", b =>
+                {
+                    b.HasOne("Domain.Entities.ProgrammingLanguage", "ProgrammingLanguage")
+                        .WithMany("Technologies")
+                        .HasForeignKey("ProgrammingLanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProgrammingLanguage");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ProgrammingLanguage", b =>
+                {
+                    b.Navigation("Technologies");
                 });
 #pragma warning restore 612, 618
         }
